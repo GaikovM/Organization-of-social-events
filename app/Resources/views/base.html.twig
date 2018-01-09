@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>
+        {% block title %}
+            Веб-сервис управления мероприятиями
+        {% endblock %}
+    </title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('css/gmv.css') }} " type="text/css"/>
+    <script src="{{ asset('js/gmv.js') }}"></script>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+{% include 'menu/menu.html.twig' %}
+
+
+<div class="container theme-showcase">
+    {% block name %}
+    {% endblock name %}
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <script>
+                    toastr.{{ type }}(" {{ message }} ");
+                </script>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock content %}
+</div>
+
+
+{% block body %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{#<footer class="footer">#}
+    {#<div class="container">#}
+        {#<p> Copyright (c) 2018 <a href="https://vk.com/di216526652">Михаил Гайков</a>#}
+            {#<span class="top">#}
+                {#<a href="#top">Вверх</a>#}
+            {#</span></p>#}
+    {#</div>#}
+{#</footer>#}
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Добавление пункта программы мероприятия</div>
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="Сохранить"/>
+            {{ form_end(form) }}
+
+            <ul>
+                <li>
+                    <a href="{{ path('program_index') }}">Back to the list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

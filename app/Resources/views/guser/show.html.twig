@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="container theme-showcase" role="main">
+        <div class="page-header">
+ <span class="text-info">
+        <h1>Профиль пользователя</h1>
+            </span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+
+                {{ form_start(form) }}
+                    {{ form_widget(form)}}
+                {{ form_end(form) }}
+
+            </div>
+
+            <div class="col-md-2">
+                {% if not gUser.image is empty %}
+                    <img src="{{ asset(vich_uploader_asset(gUser.image, 'imageFile'))|imagine_filter('user_photo_140x140') }}"
+                         class="img-circle" alt="gUser.image"/>
+                {% else %}
+                    <img src="{{ asset('image/user/no-avatar.png')|imagine_filter('user_photo_140x140') }}"
+                         class="img-circle"/>
+                {% endif %}
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p> Номер учетной записи {{ gUser.id }}</p>
+                        <p> Имя пользователя: {{ gUser.username }}</p>
+                        <p> Город: {{ gUser.city }}</p>
+                        <p> Пол: {{ gUser.gender }}</p>
+                        <p> Дата рождения: {{ gUser.dateofbirth|date('Y-m-d')  }}</p>
+                        <p> О себе: {{ gUser.about }}</p>
+                        <p> Сайт: {{ gUser.site }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

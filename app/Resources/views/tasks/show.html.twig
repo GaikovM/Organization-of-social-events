@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Задание</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">Пользователь</div>
+                    <div class="col-md-6">{{ task.user }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Описание зажания</div>
+                    <div class="col-md-6">{{ task.name }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Статус</div>
+                    <div class="col-md-6">{{ task.status }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Срок</div>
+                    <div class="col-md-6">{{ task.datefinish|date('Y-m-d') }}</div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-inline">
+            <li>
+                <a href="{{ path('task_work_index', { 'id': id_event }) }}" class="btn btn-info" >Отмена</a>
+            </li>
+            <li>
+                <a href="{{ path('task_work_edit', { 'id': task.id, 'id_event':id_event  }) }}" class="btn btn-success" >Изменить</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" class="btn btn-danger" value="Удалить">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+
+        <div class="row">
+            <div class="col-sm-10 col-md-offset-1">
+                {% set value = 'task_id_' ~ task.id %}
+                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': value} %}
+             </div>
+
+    </div>
+
+{% endblock %}

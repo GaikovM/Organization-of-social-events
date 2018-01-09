@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
+{% endblock %}
+
+{% block body %}
+
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a href="#">Все</a></li>
+                <li class="nav-item"><a href="#">Выставки</a></li>
+                <li class="nav-item"><a href="#">Концерты</a></li>
+                <li class="nav-item"><a href="#">Фестивали и шоу</a></li>
+                <li class="nav-item"><a href="#">Экскурсии</a></li>
+                <li class="nav-item"><a href="#">Праздники</a></li>
+                <li class="nav-item"><a href="#">Ярмарки</a></li>
+                <li class="nav-item"><a href="#">Конкурсы</a></li>
+                <li class="nav-item"><a href="#">Презентации</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div id="map" style="height:535px; border: 3px solid #0b93d5; width:550px ">
+            </div>
+        </div>
+
+            <div class="col-md-6">
+
+                <div class="row" style="margin-bottom: 5px">
+
+                <div class="col-md-6">
+                    <a href="http://diplom.by/app_dev.php/event/9">
+                        <img src=" http://diplom.by/uploads/user_mi/Image00001.jpg"
+                        />
+                        <div class="carousel-caption">
+                            <h4>Вечеринка с рисованием картин Painty</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="http://diplom.by/app_dev.php/event/5">
+                        <img src=" http://diplom.by/uploads/user_mi/Image00002.jpg"
+                        />
+                        <div class="carousel-caption">
+                            <h4>Мастер-класс «Ораторское искусство»</h4>
+                        </div>
+                    </a>
+                </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-6">
+                        <a href="http://diplom.by/app_dev.php/event/7">
+                            <img src=" http://diplom.by/uploads/user_mi/Image00003.jpg"
+                            />
+
+                            <div class="carousel-caption">
+                                <h4>Выставка «Климт — Ожившие полотна»</h4>
+                            </div>
+
+                        </a>
+
+                    </div>
+                    <div class="col-md-6">
+                        <a href="http://diplom.by/app_dev.php/event/6">
+                            <img src=" http://diplom.by/uploads/user_mi/Image00004.jpg"
+                            />
+
+                            <div class="carousel-caption">
+                                <h4>Шоу «Закрытый микроfон»</h4>
+                            </div>
+
+
+                        </a>
+                    </div>
+
+                </div>
+
+                    <div class="row" style="margin-bottom: 5px">
+
+                        <div class="col-md-6">
+                            <a href="http://diplom.by/app_dev.php/event/8">
+                                <img src=" http://diplom.by/uploads/user_mi/Image00007.jpg"
+                                />
+
+                                <div class="carousel-caption">
+                                    <h4>Вечер живого джаза в Хорошей республике</h4>
+                                </div>
+
+                            </a>
+
+                        </div>
+                        <div class="col-md-6">
+                            <a href="http://diplom.by/app_dev.php/event/10">
+                                <img src=" http://diplom.by/uploads/user_mi/Image00006.jpg"
+                                />
+
+                                <div class="carousel-caption">
+                                    <h4>Шоу-спектакль «Мечты, меняющие мир»</h4>
+                                </div>
+
+                            </a>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>#}
+
+        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-geosearch@2.6.0/dist/bundle.min.js"></script>
+        <script src="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+        <script>
+
+            var cities = L.layerGroup();
+
+            L.marker([52.433334, 31.003753]).bindPopup('Мастер-класс «Ораторское искусство: харизма, лидерство, влияние»').addTo(cities),
+                L.marker([53.909508, 27.547435]).bindPopup('Шоу «Закрытый микроfон»').addTo(cities);
+
+            var cities2 = L.layerGroup();
+
+            L.marker([53.897107, 27.555334]).bindPopup('Выставка «Климт — Ожившие полотна»').addTo(cities2),
+                L.marker([53.901035, 27.561125]).bindPopup('Вечер живого джаза в Хорошей республике').addTo(cities2),
+                L.marker([53.894154, 27.543073]).bindPopup('Вечеринка с рисованием картин Painty').addTo(cities2),
+                L.marker([53.913325, 27.555154]).bindPopup('Шоу-спектакль «Мечты, меняющие мир»').addTo(cities2);
+
+
+            var grayscale = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            });
+
+            var mymap = L.map('map', {
+                center: [53.99, 27.73],
+                zoom: 10,
+                layers: [grayscale, cities, cities2]
+            });
+
+            var GeoSearchControl = window.GeoSearch.GeoSearchControl;
+            var OpenStreetMapProvider = window.GeoSearch.OpenStreetMapProvider;
+
+            var provider = new OpenStreetMapProvider();
+
+            var searchControl = new GeoSearchControl({
+                provider: provider,
+                style: 'topright',
+                showMarker: false,
+                retainZoomLevel: false,
+                animateZoom: true,
+                autoClose: true,
+                keepResult: true,
+
+            });
+
+            mymap.addControl(searchControl);
+
+            lc = L.control.locate({
+                strings: {
+                    title: "Показать местоположение!"
+                }
+            }).addTo(mymap);
+
+            var baseLayers = {
+                "Grayscale": grayscale,
+            };
+
+            var overlays2 = {
+                "Cities": cities,
+                "Cities2": cities2,
+
+            };
+
+            L.control.layers(baseLayers, overlays2).addTo(mymap);
+
+        </script>
+    {% endblock %}
+

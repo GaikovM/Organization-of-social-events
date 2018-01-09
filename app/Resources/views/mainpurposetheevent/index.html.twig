@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mainpurposetheevents list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Free</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mainPurposeTheEvent in mainPurposeTheEvents %}
+            <tr>
+                <td><a href="{{ path('mainpurposetheevent_show', { 'id': mainPurposeTheEvent.id }) }}">{{ mainPurposeTheEvent.id }}</a></td>
+                <td>{{ mainPurposeTheEvent.name }}</td>
+                <td>{% if mainPurposeTheEvent.free %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('mainpurposetheevent_show', { 'id': mainPurposeTheEvent.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('mainpurposetheevent_edit', { 'id': mainPurposeTheEvent.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mainpurposetheevent_new') }}">Create a new mainPurposeTheEvent</a>
+        </li>
+    </ul>
+{% endblock %}

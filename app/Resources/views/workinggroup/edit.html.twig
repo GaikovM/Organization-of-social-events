@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Редактирование участника группы</div>
+            <div class="panel-body">
+                {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+
+
+                <ul class="list-inline">
+                    <li>
+                        <input type="submit" class="btn btn-success" value="Изменить"/>
+                    </li>
+                    {{ form_end(edit_form) }}
+                    <li>
+                        <a href="{{ path('event_workinggroup_index', {'id':id_event})}} " class="btn btn-info">Отмена</a>
+                    </li>
+                    <li>
+                        {{ form_start(delete_form) }}
+                        <input type="submit" class="btn btn-danger" value="Удалить">
+                        {{ form_end(delete_form) }}
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+

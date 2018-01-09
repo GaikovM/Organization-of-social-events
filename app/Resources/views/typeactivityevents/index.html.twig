@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Typeactivityevents list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for typeActivityEvent in typeActivityEvents %}
+            <tr>
+                <td><a href="{{ path('typeactivityevents_show', { 'id': typeActivityEvent.id }) }}">{{ typeActivityEvent.id }}</a></td>
+                <td>{{ typeActivityEvent.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('typeactivityevents_show', { 'id': typeActivityEvent.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('typeactivityevents_edit', { 'id': typeActivityEvent.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('typeactivityevents_new') }}">Create a new typeActivityEvent</a>
+        </li>
+    </ul>
+{% endblock %}

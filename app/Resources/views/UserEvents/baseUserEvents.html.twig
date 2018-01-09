@@ -1,0 +1,37 @@
+<div class="container">
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="btn btn-danger navbar-btn"   href="{{ path('event_new') }}">Создать мероприятие</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{{ path('user_panel_index') }}">Мои мероприятия</a></li>
+                <li><a href="{{ path('user_panel_participants_events_index') }}">Участие в меропритятиях</a></li>
+
+                {#<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Управление мероприятиями<span#}
+                                {#class="caret"></span></a>#}
+                    {#<ul class="dropdown-menu">#}
+                        {#<li><a href="{{ path('user_panel_index') }}">Мои созданные мероприятия</a></li>#}
+                        {#<li><a href="{{ path('user_panel_participants_events_index') }}">Участие в меропритятиях</a></li>#}
+                    {#</ul>#}
+                {#</li>#}
+
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Работа <span
+                                class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('user_task_work_index') }}">Мои задачи</a></li>
+                        <li><a href="{{ path('user_creater_task_work_index') }}">Мои поставленные задачи</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Пользователи<span
+                                class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('user_panel_User_Friends_index') }}">Мои подписки</a></li>
+                        <li><a href="{{ path('user_panel_UserP_Friends_index') }}">Мои подписчики</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

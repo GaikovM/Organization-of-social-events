@@ -1,0 +1,44 @@
+<?php
+
+namespace GMV\gmvEventBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+
+class ProgramTheEventType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('content')
+            ->add('time_start', TimeType::class, array(
+                'placeholder' => 'Select a value', 'label' => 'Время начала мероприятия'))
+            ->add('time_finish', TimeType::class, array(
+                'placeholder' => 'Select a value', 'label' => 'Время окончания мероприятия'))
+            ->add('responsible');
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'GMV\gmvEventBundle\Entity\ProgramTheEvent'
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'gmv_gmveventbundle_programtheevent';
+    }
+
+
+}

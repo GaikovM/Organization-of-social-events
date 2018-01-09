@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Thetargetaudienceevents list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Access</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for theTargetAudienceEvent in theTargetAudienceEvents %}
+            <tr>
+                <td><a href="{{ path('thetargetaudienceevents_show', { 'id': theTargetAudienceEvent.id }) }}">{{ theTargetAudienceEvent.id }}</a></td>
+                <td>{{ theTargetAudienceEvent.name }}</td>
+                <td>{% if theTargetAudienceEvent.Access %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('thetargetaudienceevents_show', { 'id': theTargetAudienceEvent.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('thetargetaudienceevents_edit', { 'id': theTargetAudienceEvent.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('thetargetaudienceevents_new') }}">Create a new theTargetAudienceEvent</a>
+        </li>
+    </ul>
+{% endblock %}

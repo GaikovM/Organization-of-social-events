@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+
+
+        <h1>Документы</h1>
+        <h3> {{ event_name }}</h3>
+
+        <table class="table table-condensed">
+
+            <thead>
+            <tr>
+
+                <th>Описание</th>
+                <th>Файл</th>
+                <th>Операции</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for documentsEvent in documentsEvents %}
+                <tr>
+                    <td>{{ documentsEvent.name }}</td>
+                    <td>{{ documentsEvent.image }}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('doc_vents_show', { 'id': documentsEvent.id ,'id_event':id_event }) }}">Показать</a>
+                            </li>
+                            <li>
+                                <a href=" {{ vich_uploader_asset(documentsEvent, 'imageFile') }}">Скачать</a>
+
+                            </li>
+                            <li>
+                                <a href="{{ path('doc_events_edit', { 'id': documentsEvent.id, 'id_event':id_event }) }}">Изменить</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <ul class="list-inline">
+            <a href="{{ path('doc_events_new' ,{'id_event':id_event }) }}" class="btn btn-success">Добавить документ</a>
+        </ul>
+    </div>
+{% endblock %}

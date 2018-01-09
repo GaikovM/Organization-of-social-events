@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    {% stylesheets '@FOSCommentBundle/Resources/public/css/comments.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('css/gmv_charing.css') }}" type="text/css"/>
+    {% endstylesheets %}
+
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="page-header">
+                    <h2>Мероприятие:
+                        <small>{{ event.name }}</small>
+                    </h2>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Общие данные</h4>
+                        </div>
+                        <div class="panel-body">
+                            <address> Контактные данные: {{ event.address }}</address>
+                            <p>Целевая аудитория: {{ event.typeActivityEvent }}</p>
+                            <p>Тип проведения мероприятия: {{ event.theTargetAudienceEvents }}</p>
+                            <p>Вид мероприятия: {{ event.typeEvents }}</p>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Описание</h4>
+                        </div>
+                        <div class="panel-body">
+                            {{ event.description|raw }}
+                            <blockquote>
+                                <HEADER> Организатор <a
+                                            href="{{ path('guser_show', { 'id': event.id }) }}"> {{ event.user }} </a>
+                                </HEADER>
+
+                                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                    <footer>
+                                        <p>Контактное лицо {{ event.theContactPerson }}</p>
+                                        <p>email {{ event.email }}</p>
+                                        <a href="tel:{{ event.phone|phone_number_format('NATIONAL') }}">
+                                            Тел. {{ event.phone|phone_number_format('NATIONAL') }}</a>
+                                        <br>
+                                        <a href="tel:{{ event.phoneNumberTwo|phone_number_format('NATIONAL') }}">
+                                            Доп.тел. {{ event.phoneNumberTwo|phone_number_format('NATIONAL') }}</a>
+                                    </footer>
+                                {% endif %}
+                            </blockquote>
+                            <p>Возрастное ограничение {{ event.agelimit }}+</p>
+                            <p>Дата проведения
+                                <label>{% if event.datestart %}{{ event.datestart|date('Y-m-d') }}{% endif %} - </label>
+
+                                <label>{% if event.datefinish %}{{ event.datefinish|date('Y-m-d') }}{% endif %}</label>
+                            </p>
+                            <p>Время проведения
+                                <label>{% if event.timeStart %}{{ event.timestart|date('H:i:s') }}{% endif %} - </label>
+
+                                <label>{% if event.timefinish %}{{ event.timefinish|date('H:i:s') }}{% endif %}</label>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Документы</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <th>Файл</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for documentsEvent in documentsEvents %}
+                                    <tr>
+                                        <td>
+                                            <a href=" {{ vich_uploader_asset(documentsEvent, 'imageFile') }}">{{ documentsEvent.name }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+
+                <div class="page-header">
+                    <h2>
+                        <small>Участники мероприятия</small>
+                    </h2>
+                </div>
+
+                <div class="row" style="margin-bottom: 5px">
+                    {% for user in ActiveUser %}
+                        {% if not user.image is empty %}
+                            <div class="col-md-3" style="margin: 3px">
+                                <a href="{{ path('guser_show', { 'id': user.id }) }}">
+                                    <img src="{{ asset(vich_uploader_asset(user.image, 'imageFile'))|imagine_filter('user_photo_80x80') }}"
+                                         class="img-circle" alt="user.image"/>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col-md-3" style="margin: 3px">
+                                <a href="{{ path('guser_show', { 'id': user.id }) }}">
+                                    <img src="{{ asset('image/user/no-avatar.png')|imagine_filter('user_photo_80x80') }}"
+                                         class="img-circle"/>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="row" style="margin-top: 10px">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ form_start(form) }}
+                        <div class="float-right">
+                            {{ form_widget(form) }}
+                        </div>
+                        {{ form_end(form) }}
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="hidden">
+                        <p id="gmv_gmveventbundle_event_coordinates"> {{ event.coordinates|json_encode() }} </p>
+                    </div>
+                    <div id="map_view"
+                         style="height: 300px; border: 3px solid #0b93d5; max-width: 100% ">
+                    </div>
+                </div>
+                <div class="row">
+                    {#{{  app.request.uri }}#}
+                    {% include '@app/event/sharing.html.twig' %}
+                </div>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="col-sm-10 col-md-offset-1">
+                {% set value = 'event_id_'~ event.id %}
+                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': value} %}
+                {#{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'foo'} %}#}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script>
+        var mymap = L.map('map_view').setView([51.505, -0.09], 13);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 15
+        }).addTo(mymap);
+
+        function getValJson() {
+            return $.parseJSON($('#gmv_gmveventbundle_event_coordinates').text());
+        }
+
+        var js = new L.geoJson(getValJson(), {}).addTo(mymap);
+        mymap.fitBounds(js.getBounds());
+    </script>
+{% endblock %}

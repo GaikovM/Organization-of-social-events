@@ -1,0 +1,398 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'ru'
+
+framework:
+    #esi: ~
+    translator:  { fallback: [ru] }
+    translator:
+            paths:
+                - '%kernel.project_dir%/translations'
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    serializer: { enable_annotations: true }
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale: 'ru'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+assetic:
+    bundles:
+      - FOSCommentBundle
+      - EventBundle
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+            cssrewrite: ~
+
+fos_comment:
+    class:
+           model:
+               comment: GMV\gmvEventBundle\Entity\Comment
+               thread: GMV\gmvEventBundle\Entity\Thread
+               vote: GMV\gmvEventBundle\Entity\Vote
+    acl: true
+    service:
+           acl:
+              thread: fos_comment.acl.thread.roles
+              comment: fos_comment.acl.comment.roles
+              vote: fos_comment.acl.vote.roles
+           manager:
+              thread: fos_comment.manager.thread.acl
+              comment: fos_comment.manager.comment.acl
+              vote: fos_comment.manager.vote.acl
+    acl_roles:
+            comment:
+                create: IS_AUTHENTICATED_FULLY
+                view: IS_AUTHENTICATED_ANONYMOUSLY
+                edit: ROLE_ADMIN
+                delete: ROLE_ADMIN
+            thread:
+              create: IS_AUTHENTICATED_FULLY
+              view: IS_AUTHENTICATED_ANONYMOUSLY
+              edit: ROLE_ADMIN
+              delete: ROLE_ADMIN
+            vote:
+                  create: IS_AUTHENTICATED_FULLY
+                  view: IS_AUTHENTICATED_ANONYMOUSLY
+                  edit: ROLE_ADMIN
+                  delete: ROLE_ADMIN
+    db_driver: orm
+
+oneup_flysystem:
+    adapters:
+        local_adapter:
+            local:
+                directory: %kernel.root_dir%/../web/docEvents/doc/
+        local_adapter_image_user:
+            local:
+                directory: %kernel.root_dir%/../web/image/user/
+    filesystems:
+        local_fs:
+            adapter: local_adapter
+            mount:   local_fs
+        local_fs_image_user:
+             adapter: local_adapter_image_user
+             mount:   local_fs_image_user
+
+ivory_ck_editor:
+   default_config: my_config
+   configs:
+            my_config:
+                filebrowserBrowseRoute : elfinder
+                filebrowserBrowseUrl : elfinder
+#                filebrowserImageBrowseUrl : elfinder
+#                filebrowserUploadUrl : elfinder
+#                filebrowserImageUploadUrl  : elfinder
+                filebrowserBrowseRouteParameters : []
+#                filebrowserBrowseRouteType:       0
+
+                language: ru
+                extraPlugins: "uploadimage,autoembed,leaflet,youtube,filetools,autogrow,image2,autolink,autoembed"
+   plugins:
+          widget:
+               path: "/bundles/user/widget/"
+               filename: "plugin.js"
+          lineutils:
+                path: "/bundles/user/lineutils/"
+                filename: "plugin.js"
+          widgetselection:
+                path: "/bundles/user/widgetselection/"
+                filename: "plugin.js"
+          leaflet:
+                path:     "/bundles/user/leaflet/"
+                filename: "plugin.js"
+          youtube:
+                path:     "/bundles/user/youtube/"
+                filename: "plugin.js"
+          filetools:
+                path:     "/bundles/user/filetools/"
+                filename: plugin.js
+          uploadimage:
+                path:     "/bundles/user/uploadimage/"
+                filename: plugin.js
+          uploadwidget:
+                path:     "/bundles/user/uploadwidget/"
+                filename: plugin.js
+          notificationaggregator:
+                path:     "/bundles/user/notificationaggregator/"
+                filename: plugin.js
+          autoembed:
+                path:     "/bundles/user/autoembed/"
+                filename: plugin.js
+          autolink:
+                path:     "/bundles/user/autolink/"
+                filename: plugin.js
+          image2:
+                path:     "/bundles/user/image2/"
+                filename: plugin.js
+          autogrow:
+                path:     "/bundles/user/autogrow/"
+                filename: plugin.js
+          btbutton:
+                path:     "/bundles/user/btbutton/"
+                filename: plugin.js
+
+
+
+
+vich_uploader:
+    db_driver: orm
+    storage:   flysystem
+    mappings:
+            assets:
+                uri_prefix:         /docEvents/doc
+                upload_destination: local_fs
+                namer: vich_uploader.namer_uniqid
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true
+            assets_user:
+                uri_prefix:         /image/user/
+                upload_destination: local_fs_image_user
+                namer: vich_uploader.namer_uniqid
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true
+
+knp_paginator:
+    page_range: 5                       # number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
+    default_options:
+        page_name: page                 # page query parameter name
+        sort_field_name: sort           # sort field query parameter name
+        sort_direction_name: direction  # sort direction query parameter name
+        distinct: true                  # ensure distinct results, useful when ORM queries are using GROUP BY statements
+        filter_field_name: filterField  # filter field query parameter name
+        filter_value_name: filterValue  # filter value query paameter name
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig'
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+
+fm_elfinder:
+    #assets_path: / # default is /assets, this is where css/js elfinder files are
+    instances:
+        default:
+            locale: %locale% # defaults to current request locale
+            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            #editor_template: custom template for your editor # default null
+            path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
+            #fullscreen: true|false # default is true, applies to simple and ckeditor editors
+            #theme: smoothness # jquery theme, default is 'smoothness'
+            include_assets: true # disable if you want to manage loading of javascript and css assets manually
+            visible_mime_types: ['image/png', 'image/jpg', 'image/jpeg'] # only show these mime types, defaults to show all
+            connector:
+                #debug: true|false # defaults to false
+                roots:       # at least one root must be defined, defines root filemanager directories
+                    uploads:
+                        #show_hidden: true|false # defaults to false, hides dotfiles
+                        driver: LocalFileSystem
+                        path: uploads
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 2M # also file upload sizes restricted in php.ini
+                        #attributes: example of setting attributes permission
+                        #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
+
+liip_imagine :
+    resolvers :
+        default :
+            web_path : ~
+
+    filter_sets :
+        cache : ~
+
+        # the name of the "filter set"
+        user_photo_140x140 :
+
+            # adjust the image quality to 75%
+            quality : 75
+
+            # list of transformations to apply (the "filters")
+            filters :
+
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                thumbnail  : { size : [140, 140], mode : outbound }
+
+                # create a 2px black border: center the thumbnail on a black background
+                # 4px larger to create a 2px border around the final image
+                background : { size : [140, 140], position : center, color : '#000000' }
+
+        user_photo_80x80 :
+                    # adjust the image quality to 75%
+                    quality : 75
+                    # list of transformations to apply (the "filters")
+                    filters :
+
+                        thumbnail  : { size : [80, 80], mode : outbound }
+
+                        background : { size : [80, 80], position : center, color : '#000000' }
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+       - bootstrap_3_layout.html.twig
+       - IvoryCKEditorBundle:Form:ckeditor_widget.html.twig
+       - LexikFormFilterBundle:Form:form_div_layout.html.twig
+    paths:
+            '%kernel.project_dir%/app/Resources/views': app
+
+fos_user:
+   db_driver: orm
+   firewall_name: main
+   user_class: GMV\gmvUserBundle\Entity\gUser
+   from_email:
+       address: suport@мирмероприятий.рус
+       sender_name: Administrator
+
+   profile:
+      form:
+#         name: app_user_profile
+         type: GMV\gmvUserBundle\Form\ProfileType
+   resetting:
+           email:
+#               template:   email/password_resetting.email.twig
+
+   registration:
+       confirmation:
+               template:   '@FOSUser/Registration/email.txt.twig'
+       confirmation:
+          enabled: true
+       form:
+          type: GMV\gmvUserBundle\Form\RegistrationType
+#            name: app_user_registration
+
+
+#fos_elastica:
+#    clients:
+#           default:
+#               host: localhost
+#               port: 9200
+#    indexes:
+#        search:
+#           finder: ~
+#           client: default
+#           types:
+#              events:
+#                 mappings:
+#                     name: ~
+#                     user: ~
+#                 persistence:
+#                     driver: orm
+#                     model: GMV\gmvEventBundle\Entity\Event
+#                     finder: ~
+#                     provider: ~
+#                     listener: ~
+
+lexik_form_filter:
+    listeners:
+        doctrine_orm: true
+        doctrine_dbal: false
+        doctrine_mongodb: false
+
+eight_points_guzzle:
+    # (de)activate logging/profiler; default: %kernel.debug%
+    logging: true
+
+    clients:
+        api_crm:
+            base_url: "http://diplom.by/app_dev.php/"
+            # guzzle client options (full description here: https://guzzle.readthedocs.org/en/latest/request-options.html)
+            # NOTE: "headers" option is not accepted here as it is provided as described above.
+            options:
+#                auth:
+#                    - ee     # login
+#                    - 123123 # password
+#                verify: true
+#                debug: true
+                headers:
+                    Accept: "application/json"
+                curl:
+                    sslversion: 1 # or !php/const:CURL_HTTP_VERSION_1_0 for symfony >= 3.2
+
+                timeout: 30
+
+            # plugin settings
+            plugin: ~
+#        api_crm:
+#            base_url: "http://diplom.by"
+#            headers:
+#                Accept: "application/json"
+
+sensio_framework_extra:
+    request: { converters: true }
+#
+fos_rest:
+    body_converter:
+        enabled: true
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['json'], fallback_format: 'json', prefer_extension: true }
+    zone:
+        - { path: ^/api/* }
+    view:
+        view_response_listener: 'force'
+#     serializer:
+#          serialize_null: true
+
+jms_serializer:
+    enable_short_alias: false
+
+   # Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+        types:
+            phone_number: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+            phone_number_two: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+            responsible: Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    port:      465
+    encryption: ssl
+    spool: { type: memory }

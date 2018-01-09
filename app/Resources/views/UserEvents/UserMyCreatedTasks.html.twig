@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gmv_search.css') }} " type="text/css"/>
+{% endblock %}
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+
+
+    <div class="container">
+        <div class="count">
+        <span class="label label-primary">
+            Всего задач: {{ tasks.getTotalItemCount }}
+        </span>
+
+        <h1> Мои созданные задания по подготовке к мероприятиям</h1>
+        <div id="createdtask">
+            <input class="search" style="border:solid 1px #ccc; border-radius: 5px" placeholder="Поиск"/>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th class="sort" data-sort="event">Мероприятие</th>
+                    <th class="sort" data-sort="name">Описание</th>
+                    <th class="sort" data-sort="date">Срок</th>
+                    <th class="sort" data-sort="user">Исполнитель</th>
+                    <th class="sort" data-sort="status">Состояние</th>
+                    <th>Операции</th>
+                </tr>
+                </thead>
+                <tbody class="list">
+                {% for task in tasks %}
+
+                    {% if date(task.datefinish) < date("now") %}
+                        <tr class="warning">
+                    {% elseif  task.status.id == "4" or task.status.id == "5" %}
+                        <tr class="success">
+                    {% else %}
+                        <tr class="info">
+                    {% endif %}
+
+                    <td class="event">
+                            {{ task.event }}
+                        </td>
+                        <td class="name">
+                            {{ task.name }}
+                        </td>
+                        <td class="date">
+                            {{ task.datefinish|date('Y-m-d') }}
+                        </td>
+                        <td class="user">
+                            {{ task.user }}
+                        </td>
+                        <td class="status">
+                            {{ task.status }}
+                        </td>
+                        <td>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true" aria-expanded="false">Действия <span
+                                                class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a href="{{ path('task_work_show', { 'id': task.id, 'id_event':task.event.id }) }}">Показать</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('task_work_edit', { 'id': task.id,  'id_event':task.event.id }) }}">Редактировать</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation text-center">
+            <ul class="pager">
+                {{ knp_pagination_render(tasks) }}
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script>
+        var options = {
+            valueNames: [ 'name', 'event','date','status','user' ]
+        };
+        var userList = new List('createdtask', options)
+
+    </script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Документ</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">Описание документа</div>
+                    <div class="col-md-6">{{ documentsEvent.name }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Файл</div>
+                    <div class="col-md-6">{{ documentsEvent.imageFile }}</div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-inline">
+            <li>
+                {#<a href="{{ path('doc_events_index', { 'id': id_event }) }}" class="btn btn-info" >Отмена</a>#}
+            </li>
+            <li>
+                <a href="{{ path('doc_events_edit', { 'id': documentsEvent.id, 'id_event':id_event  }) }}" class="btn btn-success" >Изменить</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" class="btn btn-danger" value="Удалить">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}

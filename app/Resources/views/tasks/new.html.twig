@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
+{% endblock %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Добавление задания</div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+
+                <ul class="list-inline">
+                    <input type="submit" class="btn btn-success" value="Сохранить"/>
+                    {{ form_end(form) }}
+                    <a href="{{ path('task_work_index', {'id':id_event})}}" class="btn btn-info">Отмена</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.ru.min.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({
+                format: "yyyy-mm-dd",
+                startDate: "today",
+                endDate:    "+6m",
+                maxViewMode: 1,
+                startView:1,
+                language: "ru",
+                autoclose: true
+            });
+        });
+    </script>
+{% endblock %}

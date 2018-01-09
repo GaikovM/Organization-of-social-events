@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gmv.css') }} " type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('css/gmv_search.css') }} " type="text/css"/>
+
+{% endblock %}
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <h1> Мои задачи к подготовке к мероприятию </h1>
+        <div id="task">
+            <input class="search" style="border:solid 1px #ccc; border-radius: 5px" placeholder="Поиск"/>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th class="sort" data-sort="event">Мероприятие</th>
+                    <th class="sort" data-sort="name">Описание</th>
+                    <th class="sort" data-sort="date">Срок</th>
+                    <th class="sort" data-sort="status">Состояние</th>
+                    <th>Операции</th>
+                </tr>
+                </thead>
+                <tbody class="list">
+                {% for workingGroupProtocol in tasks %}
+                    <tr>
+                        <td class="event">
+                            <a href="{{ path('event_show', { 'id': workingGroupProtocol.event.id }) }}">{{ workingGroupProtocol.event }}</a>
+                        </td>
+                        <td class="name">
+                            {{ workingGroupProtocol.name }}
+                        </td>
+                        <td class="date">
+                            {{ workingGroupProtocol.datefinish|date('Y-m-d') }}
+                        </td>
+                        <td class="status">
+                            {{ workingGroupProtocol.status }}
+                        </td>
+                        <td>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-haspopup="true" aria-expanded="false">Действия <span
+                                                class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a href="{{ path('user_task_work_show', { 'id': workingGroupProtocol.id, 'id_event':workingGroupProtocol.event.id }) }}">Показать</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ path('user_task_work_edit', { 'id': workingGroupProtocol.id,  'id_event':workingGroupProtocol.event.id }) }}">Редактировать</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script>
+        var options = {
+            valueNames: [ 'name', 'event','date','status' ]
+        };
+        var userList = new List('task', options)
+    </script>
+{% endblock %}

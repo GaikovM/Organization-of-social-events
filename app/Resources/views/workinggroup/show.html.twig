@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Участник группы</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">Пользователь</div>
+                    <div class="col-md-6">{{ workingGroup.user }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Категория участника</div>
+                    <div class="col-md-6">{{ workingGroup.categoryUsersEvent }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Название рабочей группы</div>
+                    <div class="col-md-6">{{ workingGroup.WorkingNameGroup }}</div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-inline">
+            <li>
+                <a href="{{ path('workinggroup_index') }}" class="btn btn-info" >Отмена</a>
+            </li>
+            <li>
+                <a href="{{ path('workinggroup_edit', { 'id': workingGroup.id }) }}" class="btn btn-success" >Изменить</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                <input type="submit" class="btn btn-danger" value="Удалить">
+                {{ form_end(delete_form) }}
+            </li>
+        </ul>
+        </div>
+      </div>
+
+
+{% endblock %}

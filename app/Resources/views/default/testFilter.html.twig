@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css"/>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <form method="get" action=".">
+        {{ form_rest(form) }}
+        <input type="submit" name="submit-filter" value="filter"/>
+    </form>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.ru.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                format: "yyyy-mm-dd",
+                startDate: "today",
+                endDate: "+6m",
+                maxViewMode: 1,
+                startView: 1,
+                language: "ru",
+                autoclose: true
+            });
+        });
+    </script>
+{% endblock %}

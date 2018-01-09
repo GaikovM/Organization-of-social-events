@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Добавление документа</div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+
+                <ul class="list-inline">
+                    <input type="submit" class="btn btn-success" value="Сохранить"/>
+                    {{ form_end(form) }}
+                    <a href="{{ path('doc_events_index', {'id':id_event}) }}" class="btn btn-info">Отмена</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

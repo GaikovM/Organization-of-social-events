@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Programtheevent</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ programTheEvent.id }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ programTheEvent.content }}</td>
+            </tr>
+            <tr>
+                <th>Time_start</th>
+                <td>{% if programTheEvent.timestart %}{{ programTheEvent.timestart|date('H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Time_finish</th>
+                <td>{% if programTheEvent.timefinish %}{{ programTheEvent.timefinish|date('H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('program_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('program_edit', { 'id': programTheEvent.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

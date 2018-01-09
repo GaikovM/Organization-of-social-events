@@ -1,0 +1,70 @@
+event_program_the_event:
+    resource: "@EventBundle/Controller/ProgramTheEventController.php"
+    type:     annotation
+
+user_g_user:
+    resource: "@UserBundle/Controller/gUserController.php"
+    type:     annotation
+
+event_working_group_protocol:
+    resource: "@EventBundle/Controller/WorkingGroupProtocolController.php"
+    type:     annotation
+
+event_working_group:
+    resource: "@EventBundle/Controller/WorkingGroupController.php"
+    type:     annotation
+
+event_documents_events:
+    resource: "@EventBundle/Controller/DocumentsEventsController.php"
+    type:     annotation
+
+
+event_type_activity_events:
+    resource: "@EventBundle/Controller/TypeActivityEventsController.php"
+    type:     annotation
+
+event_the_target_audience_events:
+    resource: "@EventBundle/Controller/TheTargetAudienceEventsController.php"
+    type:     annotation
+
+event_main_purpose_the_event:
+    resource: "@EventBundle/Controller/MainPurposeTheEventController.php"
+    type:     annotation
+
+event_event:
+    resource: "@EventBundle/Controller/EventController.php"
+    type:     annotation
+
+
+user_event:
+    resource: "@EventBundle/Controller/UserEventPanelController.php"
+    type:     annotation
+
+fos_user:
+   resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+fos_comment_api:
+    type: rest
+    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    prefix: /api
+    defaults: { _format: html }
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+elfinder:
+     resource: "@FMElfinderBundle/Resources/config/routing.yml"
+
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+
+event:
+    resource: "@EventBundle/Controller/"
+    type:     annotation
+    prefix:   /
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

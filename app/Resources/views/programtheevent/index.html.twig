@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <h1> Рабочая программа </h1>
+
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>Time_start</th>
+                <th>Time_finish</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for programTheEvent in programTheEvents %}
+                <tr>
+                    <td><a href="{{ path('program_show', { 'id': programTheEvent.id }) }}">{{ programTheEvent.id }}</a>
+                    </td>
+                    <td>{{ programTheEvent.content }}</td>
+                    <td>{% if programTheEvent.timestart %}{{ programTheEvent.timestart|date('H:i:s') }}{% endif %}</td>
+                    <td>{% if programTheEvent.timefinish %}{{ programTheEvent.timefinish|date('H:i:s') }}{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('program_show', { 'id': programTheEvent.id }) }}">show</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('program_edit', { 'id': programTheEvent.id }) }}">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <ul>
+            <li>
+                <a href="{{ path('program_new') }}">Create a new programTheEvent</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

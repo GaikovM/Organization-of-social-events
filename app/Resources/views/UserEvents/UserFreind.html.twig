@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include '/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+
+        <h1>Мои подписчики</h1>
+                   <div class="row" style="margin-bottom: 5px">
+            {% for user in FriendsUser %}
+                {% if not user.image is empty %}
+                <div class="col-md-2" style="margin: 3px">
+                    <a href="{{ path('guser_show', { 'id': user.id }) }}">
+
+                    <img src="{{ asset(vich_uploader_asset(user.image, 'imageFile'))|imagine_filter('user_photo_140x140') }}"
+                         class="img-circle" alt="user.image"/>
+                    </a>
+                    <p> Пользователь: {{ user.username }}</p>
+
+                </div>
+                {% else %}
+                <div class="col-md-2" style="margin: 3px">
+                    <img src="{{ asset('image/user/no-avatar.png')|imagine_filter('user_photo_140x140') }}"
+                         class="img-circle"/>
+                    <p> Пользователь: {{ user.username }}</p>
+
+                </div>
+
+                {% endif %}
+
+
+            {% endfor %}
+        </div>
+        </div>
+        <br/>
+
+
+    </div>
+
+{% endblock %}

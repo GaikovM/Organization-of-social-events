@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@2.6.0/dist/style.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" />
+{% endblock %}
+
+{% block body %}
+
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Добавление мероприятия</div>
+            <div class="panel-body">
+
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <strong><p class="text-center">Координаты мероприятия</p></strong>
+
+                <div id="mapedit" class="container" style="height: 600px; border: 3px solid red; max-width: 100% "></div>
+
+                <ul class="list-inline" style="margin: 10px">
+                    <input type="submit" onclick="setValJson()" class="btn btn-success" value="Сохранить"/>
+                    {{ form_end(form) }}
+                    <a href="{{ path('user_panel_index') }}" class="btn btn-info">Отмена</a>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.11/leaflet.draw-src.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch@2.6.0/dist/bundle.min.js"></script>
+    <script src="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="{{ asset('js/gmv_leaflet.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.ru.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({
+                format: "yyyy-mm-dd",
+                startDate: "today",
+                endDate:    "+6m",
+                maxViewMode: 1,
+                startView:1,
+                language: "ru",
+                autoclose: true
+            });
+        });
+    </script>
+{% endblock %}

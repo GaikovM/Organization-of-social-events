@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include '@app/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Редактирование задания</div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-6">Описание зажания</div>
+                    <div class="col-md-6">{{ task.name }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Статус</div>
+                    <div class="col-md-6">{{ task.status }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">Срок</div>
+                    <div class="col-md-6">{{ task.datefinish|date('Y-m-d') }}</div>
+                </div>
+
+                {{ form_start(edit_form) }}
+                {{ form_widget(edit_form) }}
+                <ul class="list-inline">
+                    <li>
+                        <input type="submit" class="btn btn-success" value="Изменить"/>
+                    </li>
+                    {{ form_end(edit_form) }}
+                    <li>
+                        <a href="{{ path('user_task_work_index') }}" class="btn btn-info">Отмена</a>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

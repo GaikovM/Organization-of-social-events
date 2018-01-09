@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/gmv_search.css') }} " type="text/css"/>
+{% endblock %}
+
+{% block body %}
+
+    {% include '/UserEvents/baseUserEvents.html.twig' %}
+
+    <div class="container">
+
+        <div class="count">
+        <span class="label label-primary">
+            Всего созданных мероприятий: {{ events.getTotalItemCount }}
+        </span>
+        </div>
+        <br/>
+
+        <h1>Мои мероприятия</h1>
+        <div id="event">
+            <input class="search" style="border:solid 1px #ccc; border-radius: 5px" placeholder="Поиск"/>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Операции</th>
+                    {#<th class="sort" data-sort="status">Активность</th>#}
+                    <th class="sort" data-sort="name"> Название</th>
+                    <th class="sort" data-sort="datestart"> Дата начала</th>
+                    <th class="sort" data-sort="datefinish"> Дата окончания</th>
+
+                </tr>
+                </thead>
+                <tbody  class="list">
+                {% for event in events %}
+
+                    {% if date(event.datefinish) < date("now") %}
+                        <tr class="warning">
+                    {% elseif date(event.datestart) < date("now") and date(event.datefinish) > date("now") %}
+                        <tr class="success">
+                    {% else %}
+                        <tr class="info">
+                    {% endif %}
+
+                    <td>
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">Действия <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ path('event_show', { 'id': event.id }) }}">Просмотр</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('event_edit', { 'id': event.id }) }}">Изменить</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('user_panel_delete_event', { 'id': event.id }) }}"
+                                           class="as-form"
+                                           data-method="delete">{{ 'Удалить'|trans({}, 'delete') }}</a>
+                                    </li>
+
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{{ path('doc_events_index' , { 'id': event.id }) }}">Документы мероприятия</a></li>
+                                    <li role="separator" class="divider"></li>
+
+                                    <li><a href="{{ path('task_work_index' , { 'id': event.id }) }}">План выполнения
+                                            работ по подготовке к мероприятию</a></li>
+
+                                    <li><a href="{{ path('event_workinggroup_index', { 'id': event.id }) }}">Рабочая
+                                            группа</a></li>
+                                    <li><a href="#">Программа мероприятия</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+
+                    {#<td class="status">{{ event.enable }}</td>#}
+                    <td class="name">{{ event.name }}</td>
+                    <td class="datestart">{% if event.datestart %}{{ event.datestart|date('Y-m-d') }}{% endif %}</td>
+                    <td class="datefinish">{% if event.datefinish %}{{ event.datefinish|date('Y-m-d') }}{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="navigation text-center">
+            <ul class="pager">
+                {{ knp_pagination_render(events) }}
+            </ul>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script>
+        var options = {
+            valueNames: ['name', 'datestart', 'datefinish','status']
+        };
+        var userList = new List('event', options)
+    </script>
+{% endblock %}
